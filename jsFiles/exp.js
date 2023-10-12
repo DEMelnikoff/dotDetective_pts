@@ -61,8 +61,9 @@ var exp = (function() {
             </div>`,
 
             `<div class='parent'>
-                <p>In Dot Detective, correct answers are rewarded with bonus money 100% of the time, and incorrect answers are rewarded with bonus money 0% of the time. Each bonus is worth 2 cents.</p>
-                <p>In other words, after each correct answer, you have a 100% chance of earning a 2-cent bonus, but after each incorrect answer, you have a 0% chance of earning a 2-cent bonus.</p>
+                <p>In Dot Detective, correct answers are rewarded with bonus money ${settings.pReward[0] * 100}% of the time, and incorrect answers are rewarded with bonus money ${100 - (settings.pReward[0] * 100)}% of the time. Each bonus is worth 2 cents.</p>
+                <p>In other words, after each correct answer, you have a ${settings.pReward[0] * 100}% chance of earning a 2-cent bonus, but after each incorrect answer, you have a ${100 - (settings.pReward[0] * 100)}% chance of earning a 2-cent bonus.</p>
+                <p>All of the bonus money you earn during Dot Detective will be delivered to you upon completion.</p>
             </div>`],
 
 
