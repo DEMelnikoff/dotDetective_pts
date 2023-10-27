@@ -10,12 +10,24 @@ var exp = (function() {
         nDots: 100,
         nRounds: 5,
         breakLength: 10,
-        pReward: [[1, .7], [.7, 1]][Math.floor(Math.random() * 2)],
+        bonusAmount: 2,
+        pReward: [[1, 1, .7], [1, .7, 1]][Math.floor(Math.random() * 2)],
     };
+
+    console.log(settings.pReward);
+
+    const bonus_html =  `<div class="outcome-container">
+                            <div class="trophy"><img src="./img/coins.jpg" height="350px"></div>
+                            <div class="your-score"><span style="color:green">+${settings.bonusAmount} Cents!</span></div>
+                        </div>`;
+
+    const noBonus_html = `<div class="outcome-container">
+                            <div class="flanker-text" style="color:red"></div>
+                            <div class="your-score"><span style="color:grey">+0 Cents</span></div>
+                        </div>`
 
     jsPsych.data.addProperties({
         signal: settings.signal,
-        zigWeight: settings.zigWeight,
         noise: settings.noise,
         nDots: settings.nDots,
         pReward_1: settings.pReward[0],
@@ -33,45 +45,164 @@ var exp = (function() {
         prePractice: [
             `<div class='parent'>
                 <p>Welcome to Dot Detective!</p>
-                <p>In Dot Detective, you'll see a series of grids. Each grid will contain <span style="color: red">red</span> dots and <span style="color: blue">blue</span> dots.
-                <br>The number of dots will change over time.</p>
+                <p>In Dot Detective, you'll see a series of grids. Each grid will contain <span style="color: red">red</span> dots and <span style="color: blue">blue</span> dots. The number of dots will change over time.</p>
                 <p>Sometimes, the average number of <span style="color: red">red</span> dots will be greater than the average number of <span style="color: blue">blue</span> dots.</p>
                 <p>Other times, the average number of <span style="color: blue">blue</span> dots will be greater than the average number of <span style="color: red">red</span> dots.</p>
                 <p><strong>Your job is to detect whether there are more <span style="color: red">red dots</span> or <span style="color: blue">blue dots</span> on average.</strong></p>
             </div>`,
 
             `<div class='parent'>
-                <p>While playing dot detective, you'll notice that some trials are easier than others;<br>sometimes it will be easy to detect whether there are 
+                <p>While playing dot detective, you'll notice that some trials are easier than others; sometimes it will be easy to detect whether there are 
                 more <span style="color: red">red dots</span> or <span style="color: blue">blue dots</span>, and sometimes it will be very difficult.</p>
 
-                <p><strong>No matter how difficult it seems, there is always a correct answer!<br>Even if the number of <span style="color: red">red dots</span> or <span style="color: blue">blue dots</span>
-                appears very similar,<br>one of the colors is always more numerous on average.</strong></p>
+                <p><strong>No matter how difficult it seems, there is always a correct answer!</strong></p>
+
+                <p>Even if the number of <span style="color: red">red dots</span> or <span style="color: blue">blue dots</span>
+                appears very similar, one of the colors is always more numerous on average.</p>
             </div>`,
 
             `<div class='parent'>
-                <p>To get a feel for Dot Detective, you will complete a series of practice rounds.</p>
+                <p>To get a feel for Dot Detective, you'll complete a series of practice rounds.</p>
                 <p>Continue when you are ready to begin practicing Dot Detective.</p>
             </div>`],
 
         postPractice: [
             `<div class='parent'>
                 <p>Practice is now complete!</p>
-                <p>In Dot Detective, you'll be able to earn bonus money.</p>
+                <p>Next, you'll play two rounds of Dot Detective.</p>
+                <p><strong>In both rounds, you'll be able to earn bonus money.</strong> All of the bonus money you earn during Dot Detective will be delivered to you upon completion.</p>
                 <p>To learn how to earn bonus money in Dot Detective, continue to the next page.</p>
+            </div>`],
+
+        preRound_1: [`<div class='parent'>
+                <p>In the first round of Dot Detective, <span style="font-weight:bold; color:green">correct</span> responses are rewarded with bonus money <span style="font-weight:bold; color:green">${settings.pReward[1] * 100}%</span> of the time. </p>
+                <p>In other words: for each <span style="font-weight:bold; color:green">correct</span> response, you have a <span style="font-weight:bold; color:green">${settings.pReward[1] * 100}%</span> chance of earning bonus money.</p>
             </div>`,
 
             `<div class='parent'>
-                <p>In Dot Detective, correct answers are rewarded with bonus money ${settings.pReward[0] * 100}% of the time, and incorrect answers are rewarded with bonus money ${100 - (settings.pReward[0] * 100)}% of the time. Each bonus is worth 2 cents.</p>
-                <p>In other words, after each correct answer, you have a ${settings.pReward[0] * 100}% chance of earning a 2-cent bonus, but after each incorrect answer, you have a ${100 - (settings.pReward[0] * 100)}% chance of earning a 2-cent bonus.</p>
-                <p>All of the bonus money you earn during Dot Detective will be delivered to you upon completion.</p>
+                <p></strong>Incorrect</strong> response are rewarded with bonus money <strong>${100 - (settings.pReward[1] * 100)}%</strong> of the time.</p>
+                <p>In other words: For each <strong>incorrect</strong> response, you have a <strong>${100 - (settings.pReward[1] * 100)}%</strong> chance of earning bonus money.</p>
+            </div>`,
+
+            `<div class='parent'>
+                <p>Each bonus is worth ${settings.bonusAmount} cents.</p>
+                <p>Immediately after each response, you'll see whether or not you won a ${settings.bonusAmount}-cent bonus.</p>
+            </div>`,
+
+            `<div class='parent'>
+                <p>If you win a ${settings.bonusAmount}-cent bonus, you'll see this image immediately after your response:</p>
+                ${bonus_html}
+            </div>`,
+
+            `<div class='parent'>
+                <p>Otherwise, you'll see this image immediately after your response:</p>
+                ${noBonus_html}
             </div>`],
 
+        postRound_1: [
+            `<div class='parent'>
+                <p>Thank you for playing the first round of Dot Detective!</p>
+                <p>Next, you'll play the second round of Dot Detective.</p>
+            </div>`],
+
+        preRound_2: [
+            `<div class='parent'>
+                <p>The second round of Dot Detective is just like the first round, with two exceptions...</p>
+            </div>`,
+
+            `<div class='parent'>
+                <p>First, <span style="font-weight:bold; color:green">correct</span> responses are rewarded with bonus money <span style="font-weight:bold; color:green">${settings.pReward[2] * 100}%</span> of the time. </p>
+                <p>In other words: for each <span style="font-weight:bold; color:green">correct</span> response, you have a <span style="font-weight:bold; color:green">${settings.pReward[2] * 100}%</span> chance of earning bonus money.</p>
+            </div>`,
+
+            `<div class='parent'>
+                <p>In addition, <strong>incorrect</strong> responses are rewarded with bonus money <strong>${100 - (settings.pReward[2] * 100)}%</strong> of the time.</p>
+                <p>In other words: For each <strong>incorrect</strong> response, you have a <strong>${100 - (settings.pReward[2] * 100)}%</strong> chance of earning bonus money.</p>
+            </div>`,],
 
         postTask: [
             `<div class='parent'>
-                <p>Dot Detective is now complete!</p>
+                <p>Both rounds of Dot Detective are now complete!</p>
                 <p>To finish this study, please continue to complete a few surveys.</p>
             </div>`]
+    };
+
+    function MakeAttnChk(settings, round) {
+
+        let firstOrSecond;
+        (round == 1) ? firstOrSecond = 'first' : firstOrSecond = 'second';
+
+        let correctAnswers;
+
+        if (settings.pReward[1] == 1 & round == 1) {
+            correctAnswers = [`100%`, `0%`];
+        } else if (settings.pReward[1] == 1 & round == 2) {
+            correctAnswers = [`70%`, `30%`];
+        } else if (settings.pReward[1] == .7 & round == 1) {
+            correctAnswers = [`70%`, `30%`];
+        } else if (settings.pReward[1] == .7 & round == 2) {
+            correctAnswers = [`100%`, `0%`];
+        };
+
+        let attnChk = {
+            type: jsPsychSurveyMultiChoice,
+            preamble: `<strong>Please answer the following questions about the ${firstOrSecond} round of Dot Detective.</strong>`,
+            questions: [
+                {
+                    prompt: `For each correct response, what are your chances of earning a ${settings.bonusAmount}-cent bonus?`, 
+                    name: `attnChk1`, 
+                    options: [`0%`, `30%`, `70%`, `100%`],
+                },
+                {
+                    prompt: `For each incorrect response, what are your chances of earning a ${settings.bonusAmount}-cent bonus?`,
+                    name: `attnChk2`, 
+                    options: [`0%`, `30%`, `70%`, `100%`],
+                },
+            ],
+            scale_width: 500,
+            on_finish: (data) => {
+                const totalErrors = dmPsych.getTotalErrors(data, correctAnswers);
+                data.totalErrors = totalErrors;
+            },
+        };
+      
+
+        const errorMessage = {
+            type: jsPsychInstructions,
+            pages: [`<p>You provided the wrong answer.</p><p>Please continue to try again.</p>`],
+            show_clickable_nav: true,
+        };
+
+        const conditionalNode = {
+          timeline: [errorMessage],
+          conditional_function: () => {
+            const fail = jsPsych.data.get().last(1).select('totalErrors').sum() > 0 ? true : false;
+            return fail;
+          },
+        };
+
+        const roundInfo = {
+            type: jsPsychInstructions,
+            pages: round == 1 ? pages.preRound_1 : pages.preRound_2,
+            show_clickable_nav: true,
+        };
+
+        const instLoop = {
+          timeline: [roundInfo, attnChk, conditionalNode],
+          loop_function: () => {
+            const fail = jsPsych.data.get().last(2).select('totalErrors').sum() > 0 ? true : false;
+            return fail;
+          },
+        };
+
+        const readyToPlay = {
+            type: jsPsychInstructions,
+            pages: [`<p>You're now ready to the ${firstOrSecond} round of Dot Detective.</p>
+                     <p>To begin, continue to the next screen.</p>`],
+            show_clickable_nav: true,
+        };
+
+        this.timeline = [instLoop, readyToPlay];
     };
 
     p.prePractice = {
@@ -88,13 +219,23 @@ var exp = (function() {
         post_trial_gap: 500,
     };
 
+    p.attnChk1 = new MakeAttnChk(settings, 1); 
+
+    p.postRound_1 = {
+        type: jsPsychInstructions,
+        pages: pages.postRound_1,
+        show_clickable_nav: true,
+        post_trial_gap: 500,
+    };
+
+    p.attnChk2 = new MakeAttnChk(settings, 2); 
+
     p.postTask = {
         type: jsPsychInstructions,
         pages: pages.postTask,
         show_clickable_nav: true,
         post_trial_gap: 500,
     };
-
     
    /*
     *
@@ -104,7 +245,7 @@ var exp = (function() {
 
     let round = 0  // track current round
     
-    const secondsLeft = arrayToList( (Array.from(Array(settings.breakLength).keys())).map((x) => settings.breakLength - x) )  // list of seconds remaining during breaks
+    const secondsLeft = dmPsych.arrayToList( (Array.from(Array(settings.breakLength).keys())).map((x) => settings.breakLength - x) )  // list of seconds remaining during breaks
     
     const factors = {
         drift: settings.signal,
@@ -115,11 +256,10 @@ var exp = (function() {
     const factorsPractice = {
         drift: settings.signal,
         noise: [settings.noise],
-        zigWeight: [settings.zigWeight],
         blockType: ['practice'],
     };  // factors for making practice block
 
-    const design = jsPsych.randomization.factorial(factors, 13);  // experimental design
+    const design = jsPsych.randomization.factorial(factors, 20);  // experimental design
 
     const designPractice = jsPsych.randomization.factorial(factorsPractice, 2);  // experimental design for practice block
 
@@ -128,7 +268,7 @@ var exp = (function() {
         type: jsPsychCanvasKeyboardResponse,
         stimulus: function(c) {
             console.log(jsPsych.timelineVariable('drift'));
-            dots(c, jsPsych.timelineVariable('drift'), 1, jsPsych.timelineVariable('noise'), 'normal', settings.responseKeys, settings.nDots);
+            dmPsych.dots(c, jsPsych.timelineVariable('drift'), 1, jsPsych.timelineVariable('noise'), 'normal', settings.responseKeys, settings.nDots);
         },
         canvas_size: [600, 800],
         choices: settings.responseKeys,
@@ -151,11 +291,20 @@ var exp = (function() {
     const feedback = {
         type: jsPsychHtmlKeyboardResponse,
         stimulus: function() {
+            let outcome = settings.pReward[round] > Math.random();
             if(jsPsych.data.getLastTrialData().values()[0].correct) {
-                return `<div style="font-size:60px">Correct!</div>`;
+                if (round > 0) {
+                    return outcome ? bonus_html : noBonus_html;
+                } else {
+                    return "<span style='font-size:60px'>Correct!</span>";
+                };
             } else {
-                return `<div style="font-size:60px">Wrong!</div>`;
-            }
+                if (round > 0) {
+                    return outcome ? noBonus_html : bonus_html;
+                } else {
+                    return "<span style='font-size:60px'>Wrong!</span>";
+                }
+            };
         },
         choices: "NO_KEYS",
         trial_duration: 1000,
@@ -200,8 +349,8 @@ var exp = (function() {
     };
 
     p.block = {
-        timeline: [trial, countdown],
-        repetitions: settings.nRounds,
+        timeline: [trial],
+        repetitions: 1,
         on_timeline_finish: () => {
             let mdn_rt = jsPsych.data.get().filter({round: round}).select('rt').median();
             console.log(mdn_rt);
@@ -410,7 +559,7 @@ var exp = (function() {
             randomize_question_order: false,
             scale_width: 500,
             on_finish: (data) => {
-                saveSurveyData(data); 
+                dmPsych.saveSurveyData(data); 
             },
         };
 
@@ -503,7 +652,7 @@ var exp = (function() {
             randomize_question_order: false,
             scale_width: 500,
             on_finish: (data) => {
-                saveSurveyData(data); 
+                dmPsych.saveSurveyData(data); 
             },
         };
 
@@ -578,7 +727,7 @@ var exp = (function() {
             randomize_question_order: false,
             scale_width: 500,
             on_finish: (data) => {
-                saveSurveyData(data); 
+                dmPsych.saveSurveyData(data); 
             },
         };
 
@@ -635,7 +784,7 @@ var exp = (function() {
             randomize_question_order: false,
             scale_width: 500,
             on_finish: (data) => {
-                saveSurveyData(data); 
+                dmPsych.saveSurveyData(data); 
             },
         };
 
@@ -692,7 +841,7 @@ var exp = (function() {
             randomize_question_order: false,
             scale_width: 500,
             on_finish: (data) => {
-                saveSurveyData(data); 
+                dmPsych.saveSurveyData(data); 
             },
         };
 
@@ -743,7 +892,7 @@ var exp = (function() {
             randomize_question_order: false,
             scale_width: 600,
             on_finish: (data) => {
-                saveSurveyData(data); 
+                dmPsych.saveSurveyData(data); 
             },
         };
 
@@ -765,7 +914,7 @@ var exp = (function() {
             type: jsPsychSurveyText,
             questions: [{prompt: "Age:", name: "age"}],
             on_finish: (data) => {
-                saveSurveyData(data); 
+                dmPsych.saveSurveyData(data); 
             },
         }; 
 
@@ -802,17 +951,25 @@ var exp = (function() {
             type: jsPsychSurveyText,
             questions: [{prompt: "Questions? Comments? Complains? Provide your feedback here!", rows: 10, columns: 100, name: "finalWord"}],
             on_finish: (data) => {
-                saveSurveyData(data); 
+                dmPsych.saveSurveyData(data); 
             },
         }; 
 
         const demos = {
-            timeline: [autotelicQuestions, flowGenQuestions, curiosity, flowProne_1, flowProne_2, nfc, gender, age, ethnicity, english, finalWord]
+            timeline: [flowGenQuestions, curiosity, flowProne_1, flowProne_2, gender, age, ethnicity, english, finalWord]
         };
 
         return demos;
 
     }());
+
+    p.save_data = {
+        type: jsPsychPipe,
+        action: "save",
+        experiment_id: "EcXUw8IlQEss",
+        filename: dmPsych.filename,
+        data_string: ()=>jsPsych.data.get().csv()
+    };
 
 
     return p;
@@ -825,11 +982,15 @@ const timeline = [
     exp.consent, 
     exp.prePractice, 
     exp.practice, 
-    exp.postPractice, 
+    exp.postPractice,
+    exp.attnChk1,
     exp.block, 
+    exp.postRound_1,
+    exp.attnChk2,
+    exp.block,
     exp.postTask, 
     exp.demographics, 
-    save_data];
+    exp.save_data];
 
 // initiate timeline
 jsPsych.run(timeline);

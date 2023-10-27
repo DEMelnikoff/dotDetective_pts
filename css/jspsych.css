@@ -558,3 +558,39 @@
 #jspsych-canvas-stimulus {
   display: block;
 }
+
+.parent {
+    position: relative; 
+    text-align: left; 
+    width: 850px; 
+    height: 500px;
+    color: black;
+}
+
+.outcome-container {
+    position: relative; 
+    text-align: center; 
+    width: 800px; 
+    height: 400px;
+    color: black; 
+}
+
+.your-score {
+    position: absolute; 
+    font-size: 60px;
+    top: 50%; 
+    left: 50%; 
+    transform: translate(-50%, -50%); 
+    width: 100%;
+    font-weight: bold;
+    text-shadow: 1px 1px 0 #000, -1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000;
+}
+
+.trophy {
+    position: absolute; 
+    top: 50%; 
+    left: 50%; 
+    transform: translate(-50%, -50%); 
+    width: 100%;
+}
+
