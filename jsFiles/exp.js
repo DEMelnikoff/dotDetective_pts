@@ -308,8 +308,8 @@ var exp = (function() {
         trial_duration: 1000,
         data: {drift: jsPsych.timelineVariable('drift'), blockType: jsPsych.timelineVariable('blockType'), round: round, trialType: "feedback"},
         on_finish: function(data) {
-            console.log(jsPsych.data.get().filter([{round:round}, {trialType:"probe"}]).select('rt'));
-            console.log(jsPsych.data.get().filter([{round:round}, {trialType:"probe"}]).select('rt').median());
+            console.log(jsPsych.data.get().filter({round:round, trialType:"probe"}).select('rt'));
+            console.log(jsPsych.data.get().filter({round:round, trialType:"probe"}).select('rt').median());
             (data.stimulus == "<span style='font-size:60px'>Correct!</span>" || data.stimulus == bonus_html) ? data.reward = true : data.reward = false;
         }
     };
