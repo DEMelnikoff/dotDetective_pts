@@ -14,8 +14,6 @@ var exp = (function() {
         pReward: [[1, 1, .7], [1, .7, 1]][Math.floor(Math.random() * 2)],
     };
 
-    console.log(settings.pReward);
-
     const bonus_html =  `<div class="outcome-container">
                             <div class="trophy"><img src="./img/coins.jpg" height="350px"></div>
                             <div class="your-score"><span style="color:green">+${settings.bonusAmount} Cents!</span></div>
@@ -357,8 +355,7 @@ var exp = (function() {
         repetitions: 1,
         on_timeline_finish: () => {
             let mdn_rt = jsPsych.data.get().filter({round: round, trialType: "probe"}).select('rt').median();
-            console.log(mdn_rt);
-            if (mdn_rt < 200) {
+            if (mdn_rt < 300) {
                 jsPsych.data.addProperties({boot: true, bootReason: 'tooFast'});
                 jsPsych.endExperiment("The experiment has ended early due to overly-fast responding.");
             };
