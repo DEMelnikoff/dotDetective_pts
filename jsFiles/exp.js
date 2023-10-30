@@ -310,8 +310,6 @@ var exp = (function() {
         data: {drift: jsPsych.timelineVariable('drift'), blockType: jsPsych.timelineVariable('blockType'), trialType: "feedback"},
         on_finish: function(data) {
             data.round = round;
-            console.log(jsPsych.data.get().filter({round:round, trialType:"probe"}).select('rt'));
-            console.log(jsPsych.data.get().filter({round:round, trialType:"probe"}).select('rt').median());
             (data.stimulus == "<span style='font-size:60px'>Correct!</span>" || data.stimulus == bonus_html) ? data.reward = true : data.reward = false;
         }
     };
@@ -358,7 +356,7 @@ var exp = (function() {
         timeline: [trial],
         repetitions: 1,
         on_timeline_finish: () => {
-            let mdn_rt = jsPsych.data.get().filter({round: round}).select('rt').median();
+            let mdn_rt = jsPsych.data.get().filter({round: round, trialType: "probe"}).select('rt').median();
             console.log(mdn_rt);
             if (mdn_rt < 200) {
                 jsPsych.data.addProperties({boot: true, bootReason: 'tooFast'});
