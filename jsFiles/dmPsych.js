@@ -13,12 +13,12 @@ const dmPsych = (function() {
   window.jsPsych = initJsPsych({
     on_finish: () => {
       let boot = jsPsych.data.get().last(1).select('boot').values[0];
-      let scoreArray = jsPsych.data.get().select('outcome').values;
-      let nWins = scoreArray.filter(Boolean).length;
-      let totalBonus = (nWins * 5) / 100;
+      let cents = (jsPsych.data.get().filter([{round:1}, {round:2}]).select('reward').sum() * 2) / 100;
+      let dollars = cents.toFixed(2);
       if(!boot) {
         document.body.innerHTML = 
-        `<div align='center' style="margin: 10%; color: rgb(109, 112, 114);">
+        `<div align='center' style="margin: 10%">
+            <p>You earned ${dollars} in bonus money!</p>
             <p><b>To receive payment, please wait while we redirect you to Prolific.</b></p>
         </div>`;
         setTimeout(() => { location.href = `https://app.prolific.co/submissions/complete?cc=${completionCode}` }, 4000);
@@ -1877,7 +1877,6 @@ const dmPsych = (function() {
     }
     let n1 = 0;
     let n2 = 0;
-    console.log(zigVec);
 
     function drawCircle(ctx, x, y, radius, fill, stroke, strokeWidth) {
         ctx.beginPath();

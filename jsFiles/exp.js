@@ -70,8 +70,8 @@ var exp = (function() {
             `<div class='parent'>
                 <p>Practice is now complete!</p>
                 <p>Next, you'll play two rounds of Dot Detective.</p>
-                <p><strong>In both rounds, you'll be able to earn bonus money.</strong> All of the bonus money you earn during Dot Detective will be delivered to you upon completion.</p>
-                <p>To learn how to earn bonus money in Dot Detective, continue to the next page.</p>
+                <p><strong>In both rounds, you'll be able to earn bonus money.</strong></p>
+                <p>All of the bonus money you earn during Dot Detective will be delivered to you upon completion. To learn how to earn bonus money in Dot Detective, continue to the next page.</p>
             </div>`],
 
         preRound_1: [`<div class='parent'>
@@ -267,7 +267,6 @@ var exp = (function() {
     const probe = {
         type: jsPsychCanvasKeyboardResponse,
         stimulus: function(c) {
-            console.log(jsPsych.timelineVariable('drift'));
             dmPsych.dots(c, jsPsych.timelineVariable('drift'), 1, jsPsych.timelineVariable('noise'), 'normal', settings.responseKeys, settings.nDots);
         },
         canvas_size: [600, 800],
@@ -308,6 +307,10 @@ var exp = (function() {
         },
         choices: "NO_KEYS",
         trial_duration: 1000,
+        on_finish: function(data) {
+            data.round = round;
+            (data.stimulus == "<span style='font-size:60px'>Correct!</span>" || data.stimulus == bonus_html) ? data.reward = true : data.reward = false;
+        }
     };
 
     const clock = {
@@ -357,7 +360,7 @@ var exp = (function() {
             if (mdn_rt < 300) {
                 jsPsych.data.addProperties({boot: true, bootReason: 'tooFast'});
                 jsPsych.endExperiment("The experiment has ended early due to overly-fast responding.");
-            }
+            };
         }
     };
 
@@ -966,7 +969,7 @@ var exp = (function() {
     p.save_data = {
         type: jsPsychPipe,
         action: "save",
-        experiment_id: "EcXUw8IlQEss",
+        experiment_id: "T8tcrzw1fnBG",
         filename: dmPsych.filename,
         data_string: ()=>jsPsych.data.get().csv()
     };
