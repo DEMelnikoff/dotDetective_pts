@@ -309,6 +309,8 @@ var exp = (function() {
         trial_duration: 1000,
         on_finish: function(data) {
             data.round = round;
+            console.log(jsPsych.data.get().filter({round: round}).select('rt'));
+            console.log(jsPsych.data.get().filter({round: round}).select('rt').median());
             (data.stimulus == "<span style='font-size:60px'>Correct!</span>" || data.stimulus == bonus_html) ? data.reward = true : data.reward = false;
         }
     };
@@ -357,7 +359,7 @@ var exp = (function() {
         on_timeline_finish: () => {
             let mdn_rt = jsPsych.data.get().filter({round: round}).select('rt').median();
             console.log(mdn_rt);
-            if (mdn_rt < 300) {
+            if (mdn_rt < 200) {
                 jsPsych.data.addProperties({boot: true, bootReason: 'tooFast'});
                 jsPsych.endExperiment("The experiment has ended early due to overly-fast responding.");
             };
