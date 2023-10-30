@@ -272,9 +272,8 @@ var exp = (function() {
         canvas_size: [600, 800],
         choices: settings.responseKeys,
         prompt: '<p>On average, are there more <span style="color: red">red</span> dots or <span style="color: blue">blue</span> dots?</p><p>Press <span style="color: red">"e" for red</span> and <span style="color: blue">"i" for blue</span>.</p>',
-        data: {drift: jsPsych.timelineVariable('drift'), blockType: jsPsych.timelineVariable('blockType')},
+        data: {drift: jsPsych.timelineVariable('drift'), blockType: jsPsych.timelineVariable('blockType'), round: round, trialType: "probe"},
         on_finish: function(data){
-            data.round = round;
             if(jsPsych.timelineVariable('drift') > 0) {
                 data.response == "i" ? data.correct = true : data.correct = false;
             } else {
@@ -307,10 +306,10 @@ var exp = (function() {
         },
         choices: "NO_KEYS",
         trial_duration: 1000,
+        data: {drift: jsPsych.timelineVariable('drift'), blockType: jsPsych.timelineVariable('blockType'), round: round, trialType: "feedback"},
         on_finish: function(data) {
-            data.round = round;
-            console.log(jsPsych.data.get().filter({round: round}).select('rt'));
-            console.log(jsPsych.data.get().filter({round: round}).select('rt').median());
+            console.log(jsPsych.data.get().filter([{round: round}, {trialType: "feedback"}]).select('rt'));
+            console.log(jsPsych.data.get().filter([{round: round}, {trialType: "feedback"}]).select('rt').median());
             (data.stimulus == "<span style='font-size:60px'>Correct!</span>" || data.stimulus == bonus_html) ? data.reward = true : data.reward = false;
         }
     };

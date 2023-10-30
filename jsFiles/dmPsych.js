@@ -13,7 +13,7 @@ const dmPsych = (function() {
   window.jsPsych = initJsPsych({
     on_finish: () => {
       let boot = jsPsych.data.get().last(1).select('boot').values[0];
-      let cents = (jsPsych.data.get().filter([{round:1}, {round:2}]).select('reward').sum() * 2) / 100;
+      let cents = (jsPsych.data.get().filter({blockType: "test"}).select('reward').sum() * 2) / 100;
       let dollars = cents.toFixed(2);
       if(!boot) {
         document.body.innerHTML = 
