@@ -271,7 +271,7 @@ var exp = (function() {
         },
         canvas_size: [600, 800],
         choices: settings.responseKeys,
-        prompt: '<p>On average, on there more <span style="color: red">red</span> dots or <span style="color: blue">blue</span> dots?</p><p>Press <span style="color: red">"e" for red</span> and <span style="color: blue">"i" for blue</span>.</p>',
+        prompt: '<p>On average, are there more <span style="color: red">red</span> dots or <span style="color: blue">blue</span> dots?</p><p>Press <span style="color: red">"e" for red</span> and <span style="color: blue">"i" for blue</span>.</p>',
         data: {drift: jsPsych.timelineVariable('drift'), blockType: jsPsych.timelineVariable('blockType')},
         on_finish: function(data){
             data.round = round;
