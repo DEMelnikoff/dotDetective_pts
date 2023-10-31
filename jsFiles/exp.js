@@ -69,7 +69,7 @@ var exp = (function() {
                 <p>Practice is now complete!</p>
                 <p>Next, you'll play two rounds of Dot Detective.</p>
                 <p><strong>In both rounds, you'll be able to earn bonus money.</strong></p>
-                <p>All of the bonus money you earn during Dot Detective will be delivered to you upon completion. To learn how to earn bonus money in Dot Detective, continue to the next page.</p>
+                <p>All of the bonus money you earn during Dot Detective will be delivered to you within 1 week after completion. To learn how to earn bonus money in Dot Detective, continue to the next page.</p>
             </div>`],
 
         preRound_1: [`<div class='parent'>
